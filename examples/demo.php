@@ -21,8 +21,18 @@ $sentiment = new \PHPInsight\Sentiment();
 foreach ($strings as $string) {
 
 	// calculations:
-	$scores = $sentiment->score($string);
-	$class = $sentiment->categorise($string);
+	if(preg_match("/(than|rather|whether|as much as|whereas|assuming|though|unless|nor)/i", $string)){ //added conjuctions
+		$scores = array(
+			'pos' => 0.3,
+			'neg' => 0.3,
+			'neu' => 0.3
+		);
+		$class = 'neu';
+	}else{
+		$scores = $sentiment->score($string);
+		$class = $sentiment->categorise($string);
+	}
+
 
 	// output:
 	echo "String: $string\n";
